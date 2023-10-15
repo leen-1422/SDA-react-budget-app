@@ -1,12 +1,6 @@
 
-
 import React,{ChangeEvent} from 'react'
-import {useState} from 'react'
-
 import { Box, Button, IconButton, TextField } from '@mui/material';
-
-
-
 type Prop ={
   income:{
     income: string;
@@ -30,19 +24,7 @@ setUserInformationList: React.Dispatch<React.SetStateAction<{
 }[]>>
 balance: () => void
 }
-
-
-
-  
-
-
-
 export default function Income(props:Prop) {
-
-    
-    // const [userInformationList, setUserInformationList] = useState <{income:string, amount:number, date:string}[]> ([])
-
-
     function getUserIncome(event: React.ChangeEvent<HTMLInputElement>){
       props.setUserIncome({ ...props.income, income: event.target.value });
       
@@ -72,16 +54,6 @@ export default function Income(props:Prop) {
         return oldValues.filter( user => user !== value)
       })
     }
-
-
-
-
-    
-
-
-
-
-  
 
   return (
     

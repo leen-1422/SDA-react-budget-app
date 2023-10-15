@@ -14,7 +14,7 @@ type Prop ={
 
 export default function Target(props:Prop) {
   const [target,setTarget] = useState (0)
-  // const [targetInput, setTargetInput]= useState<number>(target);
+ 
 
 
   function getUserTarget(event: React.ChangeEvent<HTMLInputElement>){
