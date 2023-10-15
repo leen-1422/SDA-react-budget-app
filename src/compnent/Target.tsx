@@ -3,10 +3,11 @@ import React, { useState }from 'react'
 
 type Prop ={
   
-  ob3: React.Dispatch<React.SetStateAction<number | undefined>>
+  setTargetInput: React.Dispatch<React.SetStateAction<number | undefined>>
   saving: number | undefined
   target: number | undefined
   progress: number
+  
 
 }
 
@@ -24,7 +25,7 @@ export default function Target(props:Prop) {
     function onSubmitHandler(event: React.FormEvent<HTMLFormElement>) {
       event.preventDefault();
       console.log(target);
-      props.ob3(target);
+      props.setTargetInput(target);
       setTarget(0);
     }
 
@@ -32,8 +33,10 @@ export default function Target(props:Prop) {
   return (
     <div>
         <form action="" onSubmit={onSubmitHandler}  >
-            <label htmlFor="">set target</label>
-            <input type="number" value={target}onChange={getUserTarget} />
+            <label htmlFor="target-source">set target <br />
+            <input type="number" id='target-source' value={target}onChange={getUserTarget} />
+            </label>
+            
             <button>add</button>
             
             
@@ -44,7 +47,7 @@ export default function Target(props:Prop) {
           <p>Current Saving:{props.saving}</p>
           <p>Progress: {props.progress} %</p>
 
-          <progress id="file"  value={props.progress}  max={props.target}></progress>
+          <progress id="file"  value={props.saving }  max={props.target } ></progress>
         </div>
 
 

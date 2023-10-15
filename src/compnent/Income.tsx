@@ -1,9 +1,10 @@
 
 
-import { type } from 'os'
-import { title } from 'process'
 import React,{ChangeEvent} from 'react'
 import {useState} from 'react'
+
+import { Box, Button, IconButton, TextField } from '@mui/material';
+
 
 
 type Prop ={
@@ -11,24 +12,27 @@ type Prop ={
     income: string;
     amount: number;
     date: string; }
-   ob: React.Dispatch<React.SetStateAction<{
+    setUserIncome: React.Dispatch<React.SetStateAction<{
       income: string,
       amount: number;
       date: string,
   }>>
 
-  a: {
+  userInformationList: {
     income: string;
     amount: number;
     date: string;
 }[]
-b: React.Dispatch<React.SetStateAction<{
+setUserInformationList: React.Dispatch<React.SetStateAction<{
   income: string;
   amount: number;
   date: string;
 }[]>>
 balance: () => void
 }
+
+
+
   
 
 
@@ -40,23 +44,35 @@ export default function Income(props:Prop) {
 
 
     function getUserIncome(event: React.ChangeEvent<HTMLInputElement>){
-      props.ob({ ...props.income, income: event.target.value });
+      props.setUserIncome({ ...props.income, income: event.target.value });
       
       };
     function getUserAmount(event: React.ChangeEvent<HTMLInputElement>){
-      props.ob({ ...props.income, amount:Number(event.target.value)}); 
+      props.setUserIncome({ ...props.income, amount:Number(event.target.value)}); 
       };
 
     function getUserDate(event:React.ChangeEvent<HTMLInputElement>){
-      props.ob({...props.income, date: event.target.value})
+      props.setUserIncome({...props.income, date: event.target.value})
     }
 
     function onSubmitHandler(event: React.FormEvent<HTMLFormElement>) {
       event.preventDefault();
-      props.b([...props.a, props.income]);
+      props.setUserInformationList([...props.userInformationList, props.income]);
       props.balance();
-      props.ob({ ...props.income, income: "", amount: 0, date: "" });
+      props.setUserIncome({ ...props.income, income: "", amount: 0, date: "" });
     }
+
+
+    const deleteByValue = (value: {
+      income: string,
+      amount: number,
+      date: string
+    })  => {
+      props.setUserInformationList(oldValues => {
+        return oldValues.filter( user => user !== value)
+      })
+    }
+
 
 
 
@@ -71,28 +87,40 @@ export default function Income(props:Prop) {
     
     
     <div>
-        <form onSubmit={onSubmitHandler}>
-            <label htmlFor="">inome source</label> <br />
-            <input type="text" onChange={getUserIncome} value={props.income.income}  /> <br />
+        <form onSubmit={onSubmitHandler} className="income-form">
+            <label htmlFor="expense-source"> <br />
+            <input type="text" id="expense-source" onChange={getUserIncome} value={props.income.income}  /> <br />
+            </label> 
+            
             
 
-            <label htmlFor="">amount of income</label> <br />
-            <input type="number" onChange={getUserAmount} value={props.income.amount} placeholder='amount'/> <br />
+            <label htmlFor="amount-source">amount of income  <br />
+            <input type="number" id="amount-source" onChange={getUserAmount} value={props.income.amount} placeholder='amount'/> <br />
+            </label> 
+           
 
-            <label htmlFor="">date of income</label> <br />
-            <input type="date"  onChange={getUserDate} value={props.income.date} /> <br />
-            <button >add income</button> 
+            <label htmlFor="date-source">date of income <br />
+            <input type="date" id='date-source' onChange={getUserDate} value={props.income.date} /> <br />
+            </label> <br />
+            
+            <button  >add income</button> 
 
         </form>
-        
+
         
 
         <div>
-        {props.a.map((user)=> {
+        {props.userInformationList.map((user,index)=> {
           return(
-            <li> {user.income}: {user.amount} EUR on {user.date} <button >delete</button> </li>
+            <li key={`income-${index}`}> {user.income}: {user.amount} EUR on {user.date} <Button onClick={() => deleteByValue(user)} 
+            variant="outlined" color="error" size="small" >X</Button> 
+            </li>
 
           ) })}
+
+
+
+
           
         </div>
 

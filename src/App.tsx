@@ -1,29 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-
-
-
-
 import Income from './compnent/Income';
 import Expense from './compnent/Expense';
 import Target from './compnent/Target';
 import Saving from './compnent/Saving';
+import { Route, Routes } from 'react-router-dom';
+import Budget from './compnent/pages/Budget';
+import { IconButton } from '@mui/material';
+
 
 
 export interface Data {
   income: string;
   amount: number;
   date: string;
-  
 }
-
-
-
-
-
-
-
 
 function App() {
   const [userIncome,setUserIncome] = useState({income:"", amount:0, date:""})
@@ -53,59 +45,31 @@ function App() {
   const calculateProgress = (): void => {
     const targetAmount = targetInput || 0;
     const savingAmount = savingInput || 0; 
-    const calculatedProgress = (savingAmount / targetAmount) *100 ; 
+    const calculatedProgress = (savingAmount / targetAmount || 0 ) *100 ; 
     setProgress(calculatedProgress);
   };
   useEffect(calculateProgress, [savingInput, targetInput]); 
-  
-
-
-  
-  
 
 
 
-  
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-  
-  
   
   return (
     <div className="App">
-      <Income ob={setUserIncome} income={userIncome} a={userInformationList} b={setUserInformationList} balance={calculateBalance}/>
-      <Expense ob1={setUserInput} expense={userInput} a={userExpense} b={setUserExpense} balance={calculateBalance}/>
-      <Target saving= {savingInput} ob3={setTargetInput} target={targetInput} progress={progress} />
-      <Saving ob2={setSavingInput} saving={savingInput} balance={balance}  />
-
-      
+      <Income setUserIncome={setUserIncome} income={userIncome} userInformationList={userInformationList} setUserInformationList={setUserInformationList} balance={calculateBalance}/>
+      <Expense setUserInput={setUserInput} expense={userInput} userExpense={userExpense} setUserExpense={setUserExpense} balance={calculateBalance}/>
+      <Target saving= {savingInput} setTargetInput={setTargetInput} target={targetInput} progress={progress} />
+      <Saving setSavingInput={setSavingInput} saving={savingInput} balance={balance}  />
 
 
+      <Routes>
+        <Route path="/budget-app" element={<Budget />}>
 
-
-      
-      
+          
+          
+        </Route>
+      </Routes>
     </div>
   );
 }
-
-
-      
-
-      
-
 
 export default App;

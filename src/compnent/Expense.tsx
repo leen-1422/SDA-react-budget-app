@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import React, { useState } from 'react'
 
 type Prop ={
@@ -5,17 +6,17 @@ type Prop ={
     expense: string;
     amount: number;
     date: string; }
-   ob1: React.Dispatch<React.SetStateAction<{
+    setUserInput: React.Dispatch<React.SetStateAction<{
     expense: string;
     amount: number;
     date: string;
 }>>
-a: {
+userExpense: {
   expense: string;
   amount: number;
   date: string;
 }[]
-b: React.Dispatch<React.SetStateAction<{
+setUserExpense: React.Dispatch<React.SetStateAction<{
   expense: string;
   amount: number;
   date: string;
@@ -29,44 +30,61 @@ export default function Expense(props:Prop) {
 
 
 function getUserExpense(event:React.ChangeEvent<HTMLInputElement>){
-  props.ob1({...props.expense, expense:event.target.value})
+  props.setUserInput({...props.expense, expense:event.target.value})
 
 }
 function getUserAmount(event:React.ChangeEvent<HTMLInputElement>){
-  props.ob1({...props.expense, amount:Number(event.target.value)})
+  props.setUserInput({...props.expense, amount:Number(event.target.value)})
 
 }
 function getUserDate(event:React.ChangeEvent<HTMLInputElement>){
-  props.ob1({...props.expense, date:event.target.value})
+  props.setUserInput({...props.expense, date:event.target.value})
 
 }
 function onSubmitHandler(event: React.FormEvent<HTMLFormElement>){
   event.preventDefault();
-  props.b([...props.a,props.expense]);
+  props.setUserExpense([...props.userExpense,props.expense]);
   props.balance();
-  props.ob1({ ...props.expense, expense: "" , amount:0, date:""})
+  props.setUserInput({ ...props.expense, expense: "" , amount:0, date:""})
 
+}
+
+const deleteByValue = (value: {
+  expense: string,
+  amount: number,
+  date: string
+})  => {
+  props.setUserExpense(oldValues => {
+    return oldValues.filter( user => user !== value)
+  })
 }
 
   return (
     <div>
         <form action="" onSubmit={onSubmitHandler}>
-        <label htmlFor="">expense source</label> <br />
-            <input type="text" onChange={getUserExpense} value={props.expense.expense}/> <br />
+        <label htmlFor="expense-source">expense source <br />
+        <input type="text" id='expense-source' onChange={getUserExpense} value={props.expense.expense}/> <br />
+        </label> 
+            
 
-            <label htmlFor="">amount of expense</label> <br />
-            <input type="number" onChange={getUserAmount} value={props.expense.amount}/> <br />
+            <label htmlFor="amount-source">amount of expense   <br />
+            <input type="number" id='amount-source' onChange={getUserAmount} value={props.expense.amount}/> <br />
+            </label> 
+            
 
-            <label htmlFor="">date of expense</label> <br />
-            <input type="date" onChange={getUserDate} value={props.expense.date}/> <br />
+            <label htmlFor="date-source">date of expense <br />
+            <input type="date" id='date-source' onChange={getUserDate} value={props.expense.date}/> <br />
 
+            </label><br /> 
+            
             <button>add expense</button>
         </form>
 
         <div>
-        {props.a.map((user)=> {
+        {props.userExpense.map((user, index)=> {
           return(
-            <li> {user.expense}: {user.amount} EUR on {user.date} </li>
+            <li key={`expense-${index}`}> {user.expense}: {user.amount} EUR on {user.date}  <Button onClick={() => deleteByValue(user)} 
+            variant="outlined" color="error" >X</Button> </li>
 
           ) })}
           
